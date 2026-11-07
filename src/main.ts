@@ -1,5 +1,6 @@
-import { preberiDatoteko, preberiNalozenoDatoteko } from "./bralnik";
-import { Risalnik } from "./crke";
+import { preberiDatoteko, preberiNalozenoDatoteko } from "./branje";
+import { Vektor, Matrika } from "./matematika";
+import { izrisiPrizor } from "./izris";
 
 // Platno iz HTML dokumenta lahko pridobimo prek njegovega ID-ja.
 // Ta ID smo nastavili v HTML datoteki (id="canvas").
@@ -26,9 +27,56 @@ if (!canvas) {
 */
 const ctx = canvas.getContext("2d")!;
 
-const risalnik = new Risalnik(ctx);
+function izpisiPrimereMatrik() {
 
-const podatki = await preberiDatoteko("data/podatki.json");
+  console.log("===== PRIMERI MATRIK =====");
+
+  // Identiteta
+  console.log("Identiteta:\n" + Matrika.identiteta().toString());
+
+  // Pomik
+  console.log("Pomik (1, 2, 3):\n" + Matrika.pomik(1, 2, 3).toString());
+
+  // Razteg
+  console.log("Razteg (2, 2, 2):\n" + Matrika.razteg(2, 2, 2).toString());
+
+  // Zasuki
+  console.log("Zasuk X (90°):\n" + Matrika.zasukX(90).toString());
+  console.log("Zasuk Y (90°):\n" + Matrika.zasukY(90).toString());
+  console.log("Zasuk Z (90°):\n" + Matrika.zasukZ(90).toString());
+
+  // Perspektiva
+  const razmerje = canvas!.width / canvas!.height;
+  console.log(
+    `Perspektiva (fov 90, razmerje ${razmerje}, near 0.01, far 100):\n` +
+      Matrika.perspektiva(90, razmerje, 0.01, 100).toString(),
+  );
+
+  // Pogled
+  console.log(
+    "Pogled (položaj [0, 0, 1], zasuk [-5, -10, 0]):\n" +
+      Matrika.pogled([0, 0, 1], [-5, -10, 0]).toString(),
+  );
+
+  // Množenje matrik
+  const a = Matrika.pomik(1, 2, 3);
+  const b = Matrika.razteg(2, 2, 2);
+  const c = a.pomnozi(b);
+
+  console.log("A = pomik (1, 2, 3):\n" + a.toString());
+  console.log("B = razteg (2, 2, 2):\n" + b.toString());
+  console.log("C = A * B:\n" + c.toString());
+
+  // Transformacija vektorja: najprej razteg (B), nato pomik (A)
+  const v = new Vektor(1, 1, 1);
+  const rezultat = v.transformiraj(c);
+  console.log("Vektor v: " + v.toString());
+  console.log("C * v: " + rezultat.toString()); // pričakovano (3, 4, 5, 1)
+}
+
+izpisiPrimereMatrik();
+
+const podatki = await preberiDatoteko("data/primer.json");
 
 /*
   V JavaScriptu in TypeScriptu lahko podatke v konzolo izpišemo s funkcijo console.log(). 
@@ -39,13 +87,7 @@ const podatki = await preberiDatoteko("data/podatki.json");
 */
 console.log("Prebrani podatki:", podatki);
 
-// R
-const crkaR = podatki.crke.r;
-risalnik.narisiR(crkaR.barva, { levo: crkaR.levo, zgoraj: crkaR.zgoraj });
-
-// G
-const crkaG = podatki.crke.g;
-risalnik.narisiG(crkaG.barva, { levo: crkaG.levo, zgoraj: crkaG.zgoraj });
+izrisiPrizor(podatki, ctx);
 
 // -----------------
 // Konfiguracija drag-and-drop funkcionalnosti
@@ -64,19 +106,9 @@ const fileInput = document.querySelector<HTMLInputElement>("#fileInput")!;
 async function obdelajDatoteko(file: File) {
   console.log("Obdelujem datoteko:", file.name, file.type);
   const podatki = await preberiNalozenoDatoteko(file);
+  console.log("Naloženi podatki:", podatki);
 
-  const canvas = document.querySelector<HTMLCanvasElement>("#canvas")!;
-  const ctx = canvas.getContext("2d")!;
-
-  // S funkcijo clearRect počistimo platno, da se nove črke na bodo risale povrhu prejšnjih.
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  const risalnik = new Risalnik(ctx);
-  const crkaR = podatki.crke.r;
-  risalnik.narisiR(crkaR.barva, { levo: crkaR.levo, zgoraj: crkaR.zgoraj });
-
-  const crkaG = podatki.crke.g;
-  risalnik.narisiG(crkaG.barva, { levo: crkaG.levo, zgoraj: crkaG.zgoraj });
+  izrisiPrizor(podatki, ctx);
 }
 
 // Brez tega nam brskalnik ne bo dovolil spustiti datoteke na canvas.

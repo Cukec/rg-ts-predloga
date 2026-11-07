@@ -1,0 +1,80 @@
+{
+    "camera": {
+        "fov": 90,
+        "near": 0.01,
+        "far": 100,
+        "position": [0, 0, 1],
+        "rotation": [-5, -10, 0]
+    },
+    "models": [
+    [
+        [[-0.5, 0.5, 0], [0, -0.5, 0], [0.5, 0.5, 0]]
+    ],
+    [
+        [[-1, -1, -1], [1, -1, -1], [1, 1, -1]],
+        [[-1, -1, -1], [1, 1, -1], [-1, 1, -1]],
+
+        [[-1, -1, 1], [1, 1, 1], [1, -1, 1]],
+        [[-1, -1, 1], [-1, 1, 1], [1, 1, 1]],
+
+        [[-1, -1, -1], [-1, 1, -1], [-1, 1, 1]],
+        [[-1, -1, -1], [-1, 1, 1], [-1, -1, 1]],
+
+        [[1, -1, -1], [1, -1, 1], [1, 1, 1]],
+        [[1, -1, -1], [1, 1, 1], [1, 1, -1]],
+
+        [[-1, -1, -1], [-1, -1, 1], [1, -1, 1]],
+        [[-1, -1, -1], [1, -1, 1], [1, -1, -1]],
+
+        [[-1, 1, -1], [1, 1, -1], [1, 1, 1]],
+        [[-1, 1, -1], [1, 1, 1], [-1, 1, 1]]
+    ]
+    ],
+    "scene": [
+        {
+            "model": 0,
+            "transforms": [
+                { "type": "scale", "parameters": [1, 1.2, 1] }
+            ]
+        },
+        {
+            "model": 0,
+            "transforms": [
+                { "type": "scale", "parameters": [0.1, 0.1, 0.1] },
+                { "type": "translate", "parameters": [0, 0, 1] }
+            ]
+        },
+        {
+            "model": 1,
+            "transforms": [
+                { "type": "scale", "parameters": [1, 2, 1] },
+                { "type": "rotate", "parameters": [-20, -30, 0] },
+                { "type": "translate", "parameters": [0, 2, -10] }
+            ]
+        },
+        {
+            "model": 1,
+            "transforms": [
+                { "type": "scale", "parameters": [2, 1, 2] },
+                { "type": "translate", "parameters": [0, 2, -10] },
+                { "type": "rotate", "parameters": [-20, -30, -15] }
+            ]
+        },
+        {
+            "model": 1,
+            "transforms": [
+                { "type": "translate", "parameters": [0, 2, -10] },
+                { "type": "rotate", "parameters": [-20, 30, 15] },
+                { "type": "scale", "parameters": [2, 1, 2] }
+            ]
+        },
+        {
+            "model": 1,
+            "transforms": [
+                { "type": "scale", "parameters": [10, 10, 10] },
+                { "type": "rotate", "parameters": [0, 40, 0] },
+                { "type": "translate", "parameters": [2, -65, -90] }
+            ]
+        }
+    ]
+}
